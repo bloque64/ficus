@@ -1,0 +1,25 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "homepage": "http://www.bloque64.com/test",
+  "private": true,
+  "dependencies": {
+    "base-64": "^0.1.0",
+    "js-cookie": "^2.2.0",
+    "ramda": "^0.25.0",
+    "react": "^16.2.0",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.2.0",
+    "react-file-reader": "^1.1.4",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "sc2-sdk": "^1.0.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:3001/"
+}

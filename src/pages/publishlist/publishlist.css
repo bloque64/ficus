@@ -1,0 +1,30 @@
+.publishList{
+  text-align: center;
+  padding: 40px;
+}
+.publishHeader{
+  text-align: left;
+}
+#publicables{
+  overflow: scroll;
+  height: 500px;
+}
+.publishTable table{
+  margin:0 auto;
+  width: 90%;
+
+}
+#cabecera_iz{
+  float: left;
+}
+#cabecera_de{
+  float: right;
+}
+
+.publishTable th{
+
+  width:10%;
+  border: 1px solid black;
+
+
+}

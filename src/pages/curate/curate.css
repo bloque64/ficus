@@ -1,0 +1,31 @@
+/*Curate*/
+.Curate{
+  text-align: center;
+  padding: 40px;
+}
+.curateHeader{
+  text-align: left;
+}
+#curables{
+  overflow: scroll;
+  height: 500px;
+}
+.tableCurator table{
+  margin:0 auto;
+  width: 90%;
+
+}
+#cabecera_iz{
+  float: left;
+}
+#cabecera_de{
+  float: right;
+}
+
+.tableCurator th{
+
+  width:10%;
+  border: 1px solid black;
+
+
+}
