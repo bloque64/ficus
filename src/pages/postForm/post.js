@@ -1,17 +1,22 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import Header from './components/header.js';
+import sc2 from 'sc2-sdk';
 import './post.css';
+
 class Post extends Component {
     constructor(props){
       super(props);
       this.state={
-        authorValue: '',
+        user: '',
         titleValue:'',
         bodyValue:'',
         tagsValue:'',
-        imageURL:''
+        imageURL:'',
+        api:this.props.api
       }
+      this.accessToken='';
+      this.api=null;
       this.sendData=this.sendData.bind(this);
       this.handleBodyChange=this.handleBodyChange.bind(this);
       this.setData=this.setData.bind(this);
@@ -20,11 +25,13 @@ class Post extends Component {
       this.handleUploadImage = this.handleUploadImage.bind(this);
 
     }
-    setData(authorData,titleData,bodyData){
+    setData(authorData,titleData,bodyData,imageURL){
       const jsonData={
         "autor":authorData,
+        "token": this.accessToken,
         "title":titleData,
         "cuerpo":bodyData,
+        "image":imageURL,
         "evaluado":false,
         "formateado":false,
         "curado":false
@@ -33,9 +40,9 @@ class Post extends Component {
     }
 
   sendData(event){
-    const data=this.setData("victor",this.state.titleValue,this.state.bodyValue);
+    const data=this.setData(this.state.user.name,this.state.titleValue,this.state.bodyValue,"URL");
     const finalData=JSON.stringify(data);
-    const url="http://138.201.188.83:8000/publicaciones/";
+    const url="http://0.0.0.0:8000/publicaciones/";
       fetch(url,{
         method: "POST",
         body: finalData,
@@ -44,7 +51,11 @@ class Post extends Component {
           'Content-Type': 'application/json'
         },
         credentials: 'include'
-      }).then(res => console.log(res))
+      }).then(res =>{
+        console.log(res);
+        alert("Artículo enviado a la cola de revisión")
+
+      } )
       .catch(function(error) {
         console.log('There has been a problem with your fetch operation: ', error.message);
       });
@@ -70,21 +81,81 @@ class Post extends Component {
     data.append('file', this.uploadInput.files[0]);
     data.append('filename', this.fileName.value);
 
-    fetch('http://localhost:8000/upload', {
+    fetch('https://steemitimages.com', {
       method: 'POST',
       body: data,
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
     }).then((response) => {
-      response.json().then((body) => {
-        this.setState({ imageURL: `http://localhost:8000/${body.file}` });
-      });
+      {/*response.json().then((body) => {
+        this.setState({ imageURL: `https://steemitimages.com/${body.file}` });
+
+      }); */}
+      console.log(response);
     });
 }
+setUserInfo(){
+
+    var res=this.state.api.me((err,result)=>{
+      console.log('/me',err,result);
+      if(!err){
+        this.setState({user:result.account})
+      }
+    });
+}
+
+setAccessToken(option){
+  {/*this.setState({accessToken:this.findQuery().access_token});*/}
+  if(option=='firstTime'){
+    this.accessToken=this.findQuery().access_token;
+    if(this.accessToken){
+      this.state.api.setAccessToken(this.accessToken);
+      localStorage.setItem('token', this.accessToken);
+
+      this.setUserInfo();
+    }
+  }
+  else{
+    this.accessToken=option;
+    if(this.accessToken){
+      this.state.api.setAccessToken(this.accessToken);
+      console.log('/token', this.accessToken);
+      this.setUserInfo();
+    }
+  }
+
+}
+componentWillMount(){
+  {/* this.api = sc2.Initialize({
+         app: 'bloquetest',
+         callbackURL: 'http://localhost:3001/test',
+         accessToken: 'access_token',
+         scope: ['login','vote','comment']
+     });
+   */}
+ }
+
+ componentDidMount() {
+   const preAcces=localStorage.getItem('token');
+   if (preAcces){
+     this.setAccessToken(preAcces);
+   }
+   else{
+     this.setAccessToken('firstTime');
+   }
+ }
+
+
 render(){
 
   return(
     <div className="Post contenido">
+
     <Header/>
-    <form onSubmit={this.sendData} >
+    <form  >
       <div className="title-input input">
         <input className="title-form form" placeholder="Título" onChange={this.handleTitleChange} value={this.state.titleValue}></input>
       </div>
@@ -96,7 +167,7 @@ render(){
       </div>
 
       <div className="button">
-       <input type="submit" value="Publicar" ></input>
+       <input type="button" value="Publicar" onClick={this.sendData} ></input>
       </div>
       <div className="button">
        <input type="button" value="Guardar"></input>

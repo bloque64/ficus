@@ -31,7 +31,7 @@ class Table extends Component {
   }
   componentDidMount(){
 
-    var result=fetch("http://138.201.188.83:8000/publicaciones/?format=json",{
+    var result=fetch("http://0.0.0.0:8000/publicaciones/?format=json",{
       method:"GET",
       credentials:'include'
     }).then((response) => {

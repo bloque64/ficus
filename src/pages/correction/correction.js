@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import Header from './components/header.js';
+
+
 import './correction.css';
 const R = require('ramda');
 
 class Post extends Component {
+
     constructor(props){
       super(props);
       this.state={
@@ -35,11 +38,13 @@ class Post extends Component {
       const q = parseSearchString(window.location.search);
       return q;
     }
-    setData(authorData,titleData,bodyData){
+    setData(authorData,titleData,bodyData,imageURL){
       const jsonData={
         "autor":authorData,
+        "token": this.state.article.token,
         "title":titleData,
         "cuerpo":bodyData,
+        "image":imageURL,
         "evaluado":false,
         "formateado":true,
         "curado":true
@@ -48,9 +53,9 @@ class Post extends Component {
     }
 
   sendData(event){
-    const data=this.setData("victor",this.state.titleValue,this.state.bodyValue);
+    const data=this.setData(this.state.article.autor,this.state.titleValue,this.state.bodyValue,this.state.article.image);
     const finalData=JSON.stringify(data);
-    const url="http://138.201.188.83:8000/publicaciones/"+this.state.id+"/";
+    const url="http://0.0.0.0:8000/publicaciones/"+this.state.id+"/";
 
       fetch(url,{
         method: "PUT",
@@ -88,7 +93,7 @@ class Post extends Component {
    }
    componentDidMount(){
 
-     fetch("http://127.0.0.1:8000/publicaciones/"+this.state.id+"/",{
+     fetch("http://0.0.0.0:8000/publicaciones/"+this.state.id+"/",{
        method:"GET",
        mode:'cors',
        credentials:'include'
@@ -111,9 +116,12 @@ class Post extends Component {
 
 render(){
 
+
   return(
     <div className="Post contenido">
+
     <Header/>
+
     <form >
       <div className="title-input input">
         <input className="title-form form" placeholder="Título" onChange={this.handleTitleChange} value={this.state.titleValue}></input>

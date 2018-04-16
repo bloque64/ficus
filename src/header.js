@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
-import selector from '../../../img/selector.jpg';
+import selector from './img/selector.jpg';
 
-import Login from '../../../components/login.js';
-
-
+import Login from './components/login.js';
 
 class Header extends Component{
 
   constructor(props){
     super(props);
-    this.state={menu:<p>parrafo</p>};
+    this.state={api:this.props.api};
     this.getDia=this.getDia.bind(this);
     this.getMes=this.getMes.bind(this);
 
@@ -49,18 +47,16 @@ class Header extends Component{
 
 
     return(
-  <div className="header">
-    <div  className="clearfix">
+  <div className="header contenido">
+      <div  className="clearfix">
         <div className="logo clearfix">
           <h1 className="logo">Bloque64Logo</h1>
         </div>
+        <Login api={this.state.api}/>
         <span id="fecha">{fechaString}</span>
       </div>
 
       <div className="contenedor clearfix">
-
-
-
         <div className="nav-principal ">
 
           <nav>
@@ -85,7 +81,7 @@ class Header extends Component{
           </nav>
 
         </div> {/*NavPrincipal*/}
-        <Login/>
+
 
         {/*<div id="nombre">
           <h2>BLOQUE64</h2>

@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import Header from './components/header.js'
 import Table from './components/table.js'
+
+
 import './correctionlist.css';
 
 class Curate extends Component {
@@ -10,6 +12,7 @@ class Curate extends Component {
 
     return(
       <div className="correctionList contenido">
+
         <Header/>
         <Table/>
         <Link to="/test"><button>Volver</button></Link>

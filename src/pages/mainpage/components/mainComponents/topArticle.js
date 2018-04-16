@@ -15,7 +15,7 @@ class TopArticle extends Component{
   componentDidMount(){
     console.log(this.props.id);
 
-    fetch("http://138.201.188.83:8000/steemit/"+this.props.id+"/?format=json",{
+    fetch("http://0.0.0.0:8000/steemit/"+this.props.id+"/?format=json",{
       method:"GET",
       mode:'cors',
       credentials:'include'
@@ -37,7 +37,7 @@ class TopArticle extends Component{
 
         <div className="articuloTop_contenido">
           <h4>{this.props.titular}</h4>
-          <Link to ={"/test/Previews/preview?article="+this.props.id+"&"}><p>{this.state.article.title}</p></Link>
+          <Link to ={"/test/previews/preview?article="+this.props.id+"&"}><p>{this.state.article.title}</p></Link>
         </div>
       </div>
     );

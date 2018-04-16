@@ -12,9 +12,9 @@ class MainPage extends Component {
     let welcomeFooter="Únete a la comunidad de lectores y autores del primer periódico descentralizado para la comunidad hispana";
     return (
       <div className="contenido Mainpage">
-        <Header/>
         <Pres welcome={welcome} welcomeFooter={welcomeFooter}/>
         <Main/>
+        <p>{this.props.text}</p>
         <Footer/>
       </div>
     );

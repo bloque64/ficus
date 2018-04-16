@@ -59,7 +59,7 @@ a{
 @media only screen and (min-width:1024px){
   .logo{
     text-align: center;
-    float: none;
+    float: left;
   }
 
 }
@@ -71,7 +71,7 @@ a{
 
 }
 .usuario li{
-  display: block;
+  display: inline-block;
   border-radius: 5px;
   background-color: white;
   transition: background-color .5s ease;

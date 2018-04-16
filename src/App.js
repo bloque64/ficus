@@ -10,6 +10,8 @@ import Correction from './pages/correction/correction.js';
 import PublishList from './pages/publishlist/publishlist.js';
 import Publish from './pages/publish/publish.js';
 import Article from './pages/article/article.js';
+import Header from './header.js';
+import Main from './main.js';
 import './App.css';
 
 
@@ -21,7 +23,9 @@ class App extends Component {
 
     return (
       <div >
-        <Switch>
+        
+        <Main/>
+      {/*  <Switch>
           <Route exact path='/test' component={MainPage}/>
           <Route path='/test/post' component={Post}/>
           <Route path='/test/login' component={Login}/>
@@ -33,7 +37,7 @@ class App extends Component {
           <Route path='/test/publish' component={Publish}/>
           <Route path='/test/articles' component={Article}/>
 
-        </Switch>
+        </Switch> */}
       </div>
     );
   }

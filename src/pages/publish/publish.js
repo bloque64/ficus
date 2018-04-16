@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import sc2 from 'sc2-sdk';
+
 import './publish.css';
 const R = require('ramda');
 const base64 = require('base-64');
@@ -11,10 +13,13 @@ class Articulo extends Component{
     this.findQuery=this.findQuery.bind(this);
     this.state={
       id:0,
+      user:null,
       titulo:"",
       cuerpo:"",
       articles:""
     }
+    this.post=this.post.bind(this);
+    this.api=null;
     this.sendData=this.sendData.bind(this);
     this.setData=this.setData.bind(this);
     this.getDia=this.getDia.bind(this);
@@ -64,19 +69,23 @@ class Articulo extends Component{
       "autor": authorData,
       "title": titleData,
       "cuerpo": bodyData,
+      "image": this.state.articles.image,
       "votado": false,
       "publicado": true
     }
     return jsonData;
   }
+  post(){
+    this.api.comment('', 'testing', this.state.user.name,this.state.articles.title.toLowerCase(), this.state.articles.title, this.state.articles.cuerpo, '', function (err, res) {
+      console.log(err, res)
+    });
+  }
 
 sendData(event){
-  const data=this.setData("victor",this.state.articles.title,this.state.articles.cuerpo);
+  const data=this.setData(this.state.articles.autor,this.state.articles.title,this.state.articles.cuerpo, this.state.articles.image);
   const finalData=JSON.stringify(data);
-  const url="http://138.201.188.83:8000/steemit/";
-  const url2="http://138.201.188.83:8000/publicaciones/"+this.state.id+"/";
-
-
+  const url="http://0.0.0.0:8000/steemit/";
+  const url2="http://0.0.0.0:8000/publicaciones/"+this.state.id+"/";
 
     fetch(url,{
       method: "POST",
@@ -87,7 +96,7 @@ sendData(event){
       },
       credentials: 'include'
     }).then(res => {console.log(res)
-        alert("¡Artículo seleccionado!")
+        alert("¡Artículo publicado!")
 
     })
     .catch(function(error) {
@@ -108,15 +117,44 @@ sendData(event){
     });
     console.log("/finaldata=", finalData);
 
+    this.post();
+
+}
+setUserInfo(){
+
+    var res=this.api.me((err,result)=>{
+      console.log('/me',err,result);
+      if(!err){
+        this.setState({user:result.account})
+      }
+    });
+}
+
+setAccessToken(option){
+  {/*this.setState({accessToken:this.findQuery().access_token});*/}
+
+    this.accessToken=option;
+    if(this.accessToken){
+      this.api.setAccessToken(this.accessToken);
+      console.log('/token', this.accessToken);
+      this.setUserInfo();
+    }
+
 
 }
   componentWillMount(){
+    this.api = sc2.Initialize({
+          app: 'bloquetest',
+          callbackURL: 'http://localhost:3001/test',
+          accessToken: 'access_token',
+          scope: ['login','vote','comment']
+      });
     this.setState({id:parseInt(this.findQuery().article)});
 
    }
    componentDidMount(){
 
-     fetch("http://138.201.188.83:8000/publicaciones/"+this.state.id+"/",{
+     fetch("http://0.0.0.0:8000/publicaciones/"+this.state.id+"/",{
        method:"GET",
        mode:'cors',
        credentials:'include'
@@ -128,8 +166,10 @@ sendData(event){
            this.setState({articles:json});
       }).catch(function(ex) {
         console.log('parsing failed', ex)
+      }).then(()=>{
+        const preAcces=localStorage.getItem('token');
+        this.setAccessToken(this.state.articles.token);
       });
-
 
 
   }
@@ -141,14 +181,7 @@ sendData(event){
 
     return(
     <div className="contenido">
-      <div className="header">
-        <div  className="clearfix">
-            <div className="logo clearfix">
-              <h1 className="logo">Bloque64Logo</h1>
-            </div>
-            <span id="fecha">{fechaString}</span>
-          </div>
-        </div>
+
         <div className="previewPage">
            <h1>{this.state.articles.title}</h1>
             <p>{this.state.articles.cuerpo}</p>

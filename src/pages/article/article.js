@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+
+
 import './article.css';
 const R = require('ramda');
 const base64 = require('base-64');
@@ -63,7 +65,7 @@ class Articulo extends Component{
    }
    componentDidMount(){
 
-     fetch("http://138.201.188.83:8000/steemit/"+this.state.id+"/",{
+     fetch("http://0.0.0.0:8000/steemit/"+this.state.id+"/",{
        method:"GET",
        mode:'cors',
        credentials:'include'
@@ -85,14 +87,7 @@ class Articulo extends Component{
 
     return(
     <div className="contenido">
-      <div className="header">
-        <div  className="clearfix">
-            <div className="logo clearfix">
-              <h1 className="logo">Bloque64Logo</h1>
-            </div>
-            <span id="fecha">{fechaString}</span>
-          </div>
-        </div>
+
         <div className="articlePage">
            <h1>{this.state.articles.title}</h1>
             <p>{this.state.articles.cuerpo}</p>

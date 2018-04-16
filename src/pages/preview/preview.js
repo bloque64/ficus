@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+
+
 import './preview.css';
 const R = require('ramda');
 const base64 = require('base-64');
@@ -59,22 +61,23 @@ class Articulo extends Component{
     const q = parseSearchString(window.location.search);
     return q;
   }
-  setData(authorData,titleData,bodyData){
+  setData(authorData,titleData,bodyData,imageURL){
     const jsonData={
       "autor":authorData,
+      "token": this.state.articles.token,
       "title":titleData,
       "cuerpo":bodyData,
+      "image":imageURL,
       "evaluado":false,
       "formateado":false,
       "curado":true
     }
     return jsonData;
   }
-
 sendData(event){
-  const data=this.setData("victor",this.state.articles.title,this.state.articles.cuerpo);
+  const data=this.setData(this.state.articles.autor,this.state.articles.title,this.state.articles.cuerpo, this.state.articles.image);
   const finalData=JSON.stringify(data);
-  const url="http://138.201.188.83:8000/publicaciones/"+this.state.id+"/";
+  const url="http://0.0.0.0:8000/publicaciones/"+this.state.id+"/";
 
 
 
@@ -104,7 +107,7 @@ sendData(event){
    }
    componentDidMount(){
 
-     fetch("http://138.201.188.83:8000/publicaciones/"+this.state.id+"/",{
+     fetch("http://0.0.0.0:8000/publicaciones/"+this.state.id+"/",{
        method:"GET",
        mode:'cors',
        credentials:'include'
@@ -129,14 +132,7 @@ sendData(event){
 
     return(
     <div className="contenido">
-      <div className="header">
-        <div  className="clearfix">
-            <div className="logo clearfix">
-              <h1 className="logo">Bloque64Logo</h1>
-            </div>
-            <span id="fecha">{fechaString}</span>
-          </div>
-        </div>
+
         <div className="previewPage">
            <h1>{this.state.articles.title}</h1>
             <p>{this.state.articles.cuerpo}</p>
